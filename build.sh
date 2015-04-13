@@ -10,7 +10,7 @@ tmp=generated/.tmp/$name/$release
 # clean previous runs
 rm -fr $genroot $tmp
 
-mkdir -p $genroot/vars $genroot/vars/defaults $genroot/templates $tmp/vars
+mkdir -p $genroot/vars $genroot/vars/defaults $genroot/templates $genroot/tasks $tmp/vars
 
 echo "Building default vars for $name from release $release..."
 
@@ -43,12 +43,12 @@ for file in $(find ./$tmp/vars -name *.yml); do
 done
 
 # generate main.yml that includes all default variables
-include_defaults=$(echo $default_files | tr " " "\n" | sed '/^$/d' | sed 's|\(.*\.yml\)|include_vars: defaults/\1|')
-cat <<EOF | tee ./$genroot/vars/main.yml &> /dev/null
+include_defaults=$(echo $default_files | tr " " "\n" | sed '/^$/d' | sed 's|\(.*\.yml\)|- include_vars: defaults/\1|')
+cat <<EOF | tee ./$genroot/tasks/main.yml &> /dev/null
 ---
 $include_defaults
 
-include_vars: defaults.yml
+- include_vars: defaults.yml
 EOF
 
 echo "Final output is in: $genroot"
