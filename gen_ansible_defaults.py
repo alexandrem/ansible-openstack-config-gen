@@ -1,26 +1,15 @@
 #!/usr/bin/env python
 
-from os.path import basename
 from datetime import datetime
 import sys
 
 import yaml
 
-from config_parser import OSConfigParser, print_comments
+from config_parser import OSConfigParser, print_comments, var_namespace, show_header
 
 
-def show_header(fpath, release):
-    date = datetime.strftime(datetime.today(), "%Y-%m-%d")
 
-    print "#"
-    print "# AUTOMATICALLY GENERATED ON {0}".format(date)
-    print "# ansible role defaults (yaml)"
-    print "# original file: {0}".format(basename(fpath))
-    print "# release: {0}".format(release)
-    print "#"
-
-
-def print_ansible_conf(parser, prefix, user_prefix):
+def print_ansible_conf(parser, prefix, namespace):
     values = parser.values
 
     for section in values:           
@@ -48,8 +37,8 @@ def print_ansible_conf(parser, prefix, user_prefix):
             if section.lower() != 'default':
                 name = "{0}_{1}".format(section.lower(), name)
 
-            if user_prefix and not name.startswith(user_prefix):
-                name = "{0}_{1}".format(user_prefix, name)
+            if namespace and not name.startswith(namespace):
+                name = "{0}_{1}".format(namespace, name)
 
             #print "# config: {0}".format(name)
 
@@ -61,16 +50,18 @@ def print_ansible_conf(parser, prefix, user_prefix):
 
 if __name__ == '__main__':
     fpath = sys.argv[1]
-    user_prefix = sys.argv[2] if len(sys.argv) >= 3 else ''
-    release = sys.argv[3] if len(sys.argv) >= 4 else ''
+    namespace = sys.argv[2] if len(sys.argv) >= 3 else ''
+    prefix = sys.argv[3] if len(sys.argv) >= 4 else ''
 
     parser = OSConfigParser()
     with open(fpath) as f:
         lines = [line.strip() for line in f.readlines()]
         parser.parse(lines)
 
-        show_header(fpath, release)
+        namespace = var_namespace(fpath, namespace)
 
-        prefix = "os_{0}".format(release)
+        full_namespace = "{0}_{1}".format(prefix, namespace) if prefix else namespace
+        show_header(fpath, full_namespace,
+                    title="ansible defaults (yaml)")
 
-        print_ansible_conf(parser, prefix=prefix, user_prefix=user_prefix)
+        print_ansible_conf(parser, prefix=prefix, namespace=namespace)

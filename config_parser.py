@@ -1,3 +1,5 @@
+from os.path import basename, splitext
+from datetime import datetime
 from collections import OrderedDict
 
 from oslo.config import iniparser
@@ -85,8 +87,28 @@ class OSConfigParser(iniparser.BaseParser):
             self._assignment(key, value)
 
 
+def show_header(fpath, namespace, title):
+    date = datetime.strftime(datetime.today(), "%Y-%m-%d")
+
+    print "#"
+    print "# AUTOMATICALLY GENERATED ON {0}".format(date)
+    print "#"
+    print "# {0}".format(title)
+    print "# original file: {0}".format(basename(fpath))
+    print "# namespace: {0}".format(namespace)
+    print "#"
+    print "---"
+
+
 def print_comments(comments, newline=0):
     for cmt in comments:
         print '# {0}'.format(cmt)
     for x in range(newline):
         print "\n"
+
+
+def var_namespace(fpath, name):
+    ns = splitext(basename(fpath.lower()).replace('-', '_'))[0]
+    if not ns.startswith(name):
+        ns = "{0}_{1}".format(name, ns)
+    return ns
