@@ -87,7 +87,7 @@ class OSConfigParser(iniparser.BaseParser):
             self._assignment(key, value)
 
 
-def show_header(fpath, namespace, title):
+def show_header(fpath, namespace, title, yaml=True):
     date = datetime.strftime(datetime.today(), "%Y-%m-%d")
 
     print "#"
@@ -97,7 +97,10 @@ def show_header(fpath, namespace, title):
     print "# original file: {0}".format(basename(fpath))
     print "# namespace: {0}".format(namespace)
     print "#"
-    print "---"
+    if yaml:
+        print "---"
+    else:
+        print ""
 
 
 def print_comments(comments, newline=0):

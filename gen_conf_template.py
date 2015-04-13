@@ -47,6 +47,6 @@ if __name__ == '__main__':
 
         full_namespace = "{0}_{1}".format(prefix, namespace) if prefix else namespace
         show_header(fpath, full_namespace,
-                    title="openstack config template")
+                    title="openstack config template", yaml=False)
 
         print_ini_jinja(parser, prefix=prefix, namespace=namespace)
