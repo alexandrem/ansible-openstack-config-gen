@@ -35,7 +35,7 @@ for conf in $(find $folder -name *.conf); do
 done
 
 # merge generated dynamic var files into single one
-out=./$genroot/vars/defaults.yml
+out=./$genroot/vars/vars.yml
 echo "---" > $out
 for file in $(find ./$tmp/vars -name *.yml); do
 	cat $file >> $out
@@ -48,7 +48,7 @@ cat <<EOF | tee ./$genroot/tasks/main.yml &> /dev/null
 ---
 $include_defaults
 
-- include_vars: defaults.yml
+- include_vars: vars.yml
 EOF
 
 echo "Final output is in: $genroot"
