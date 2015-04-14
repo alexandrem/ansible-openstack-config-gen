@@ -31,8 +31,8 @@ def print_ini_jinja(parser, prefix, namespace):
 
             var_name = "os_tmpl_{0}".format(var_name)
 
-            if entry['commented'] and val is None:
-                print "{{% if not {0} -%}}#{{%- endif -%}}".format(var_name)
+            #if entry['commented'] and val is None:
+            print "{{% if not {0} -%}}#{{%- endif -%}}".format(var_name)
 
             print "{0}={{{{ {1} }}}}\n".format(name, var_name)
 
