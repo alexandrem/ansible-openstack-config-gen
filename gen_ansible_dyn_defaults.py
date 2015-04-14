@@ -21,6 +21,8 @@ def show_header(fpath):
     print "# Don't touch it and don't override the variables"
     print "# here in your playbook group vars."
     print "#"
+    print "# You must always use the os_cfg_* variables."
+    print "#"
 
 
 def print_ansible_dyn_defaults(parser, prefix, namespace):
@@ -38,11 +40,16 @@ def print_ansible_dyn_defaults(parser, prefix, namespace):
             if namespace and not var_name.startswith(namespace):
                 var_name = "{0}_{1}".format(namespace, var_name)
 
-            tmpl_name = "os_{0}".format(var_name)
+            tmpl_name = "os_tmpl_{0}".format(var_name)
 
             os_release_var_name = "{0}_{1}".format(prefix, var_name)
 
-            print "{0}: \"{{{{ {1} | default({2}) }}}}\"".format(tmpl_name, var_name, os_release_var_name)
+            # end user variables are prefixed with cfg_
+            user_var_name = "os_cfg_{0}".format(var_name)
+
+            print "{0}: \"{{{{ {1} | default({2}) }}}}\"".format(tmpl_name,
+                                                                 user_var_name,
+                                                                 os_release_var_name)
 
 
 if __name__ == '__main__':

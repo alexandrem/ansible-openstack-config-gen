@@ -29,7 +29,7 @@ def print_ini_jinja(parser, prefix, namespace):
             if namespace and not name.startswith(namespace):
                 var_name = "{0}_{1}".format(namespace, var_name)
 
-            var_name = "os_{0}".format(var_name)
+            var_name = "os_tmpl_{0}".format(var_name)
 
             if entry['commented'] and val is None:
                 print "{{% if not {0} -%}}#{{%- endif -%}}".format(var_name)
@@ -49,8 +49,7 @@ if __name__ == '__main__':
 
         namespace = var_namespace(fpath, namespace)
 
-        full_namespace = "{0}_{1}".format(prefix, namespace) if prefix else namespace
-        show_header(fpath, full_namespace,
+        show_header(fpath, namespace,
                     title="openstack config template", yaml=False)
 
         print_ini_jinja(parser, prefix=prefix, namespace=namespace)

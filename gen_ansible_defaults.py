@@ -58,8 +58,7 @@ if __name__ == '__main__':
 
         namespace = var_namespace(fpath, namespace)
 
-        full_namespace = "{0}_{1}".format(prefix, namespace) if prefix else namespace
-        show_header(fpath, full_namespace,
+        show_header(fpath, namespace,
                     title="ansible defaults (yaml)")
 
         print_ansible_conf(parser, prefix=prefix, namespace=namespace)
