@@ -2,7 +2,8 @@
 
 import sys
 
-from config_parser import OSConfigParser, print_comments, var_namespace, show_header
+from config_parser import OSConfigParser, print_comments, var_namespace, \
+                          show_header
 
 
 
@@ -30,6 +31,10 @@ def print_ini_jinja(parser, prefix, namespace):
             #if prefix:
             #    var_name = "{0}_{1}".format(prefix, var_name)
 
+            #if entry['commented']:
+            #    print "{%% if {0} %%}"
+            #    print "{0}={{{{ {1} }}}}\n".format(name, var_name)
+            #else:
             print "{0}={{{{ {1} }}}}\n".format(name, var_name)
 
 

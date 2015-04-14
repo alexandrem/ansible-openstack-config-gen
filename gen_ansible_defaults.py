@@ -5,7 +5,8 @@ import sys
 
 import yaml
 
-from config_parser import OSConfigParser, print_comments, var_namespace, show_header
+from config_parser import OSConfigParser, print_comments, var_namespace, \
+                          show_header, infer_type
 
 
 
@@ -22,10 +23,18 @@ def print_ansible_conf(parser, prefix, namespace):
             if len(entry['comments']) > 0:
                 print_comments(entry['comments'])
 
+            value_type = infer_type(entry['comments'])
+
             if len(entry['value']) == 1:
                 val = entry['value'][0]
+
                 if val == '<None>':
-                    val = ''
+                    if value_type == 'int':
+                        val = None
+                    elif value_type == 'multi':
+                        val = []
+                    else:
+                        val = ''
                 else:
                     try:
                         val = yaml.load(val)
@@ -45,7 +54,16 @@ def print_ansible_conf(parser, prefix, namespace):
             if prefix:
                 name = "{0}_{1}".format(prefix, name)
 
-            print yaml.dump(dict([(name, val)]), indent=2, default_flow_style=False)
+            if val is not None:
+                conf_line = yaml.dump(dict([(name, val)]), indent=2, default_flow_style=False)
+            else:
+                conf_line = "{0}: \n".format(name)
+
+            deprecated = False
+            if not deprecated:
+                print conf_line
+            else:
+                print "#{0}".format(conf_line)
 
 
 if __name__ == '__main__':
