@@ -10,6 +10,7 @@ class OSConfigParser(iniparser.BaseParser):
     values = None
     section = ''
     comments = []
+    commented = False
 
     def __init__(self):
         self.values = OrderedDict()
@@ -18,9 +19,11 @@ class OSConfigParser(iniparser.BaseParser):
         self.values.setdefault(self.section, {'comments': [], 'entries': {}})
         self.values[self.section]['entries'][key] = {
           'value': value,
-          'comments': self.comments
+          'comments': self.comments,
+          'commented': self.commented
         }
         self.comments = []
+        self.commented = False
 
     def new_section(self, section):
         self.section = section
@@ -32,10 +35,12 @@ class OSConfigParser(iniparser.BaseParser):
 
     def comment(self, comment):
         if len(comment) > 0 and comment[0].isalpha() and '=' in comment:
+            self.commented = True
             self.parse([comment])
             self.comments = []
         else:
             if False and ' = ' in comment:
+                self.commented = True
                 try:
                     self.parse([comment[1:]])
                     self.comments = []
@@ -115,3 +120,13 @@ def var_namespace(fpath, name):
     if not ns.startswith(name):
         ns = "{0}_{1}".format(name, ns)
     return ns
+
+
+def infer_type(comments):
+    text = ' '.join(comments)
+    if text.endswith('(multi valued)'):
+        return 'multi'
+    if text.endswith('(list value)'):
+        return 'list'
+    if text.endswith('(integer value)'):
+        return 'int'
