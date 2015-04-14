@@ -3,7 +3,7 @@
 import sys
 
 from config_parser import OSConfigParser, print_comments, var_namespace, \
-                          show_header
+                          show_header, value_to_yaml
 
 
 
@@ -20,6 +20,8 @@ def print_ini_jinja(parser, prefix, namespace):
             if len(entry['comments']) > 0:
                 print_comments(entry['comments'])
 
+            val = value_to_yaml(entry)
+
             var_name = name
             if section.lower() != 'default':
                 var_name = "{0}_{1}".format(section.lower(), var_name)
@@ -31,9 +33,9 @@ def print_ini_jinja(parser, prefix, namespace):
             #if prefix:
             #    var_name = "{0}_{1}".format(prefix, var_name)
 
-            #if entry['commented']:
-            #    print "{%% if {0} %%}"
-            #    print "{0}={{{{ {1} }}}}\n".format(name, var_name)
+            if entry['commented'] and val is None:
+                print "{{% if not {0} -%}}#{{%- endif -%}}".format(var_name)
+                #print "{0}={{{{ {1} }}}}\n".format(name, var_name)
             #else:
             print "{0}={{{{ {1} }}}}\n".format(name, var_name)
 

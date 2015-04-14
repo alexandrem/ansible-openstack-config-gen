@@ -2,6 +2,8 @@ from os.path import basename, splitext
 from datetime import datetime
 from collections import OrderedDict
 
+import yaml
+
 from oslo.config import iniparser
 
 
@@ -124,9 +126,38 @@ def var_namespace(fpath, name):
 
 def infer_type(comments):
     text = ' '.join(comments)
-    if text.endswith('(multi valued)'):
+    if '(multi valued)' in text:
         return 'multi'
-    if text.endswith('(list value)'):
+    if '(list value)' in text:
         return 'list'
-    if text.endswith('(integer value)'):
+    if '(integer value)' in text:
         return 'int'
+
+def value_to_yaml(entry):
+    value_type = infer_type(entry['comments'])
+
+    def convert(val):
+        if value_type == 'int' or value_type == 'multi':
+            val = None
+        elif value_type == 'list':
+            val = []
+        else:
+            val = ''
+        return val
+
+    if len(entry['value']) == 1:
+        val = entry['value'][0]
+
+        if val == '<None>':
+            val = convert(val)
+        else:
+            try:
+                val = yaml.load(val)
+                if val is None:
+                    val = convert(val)
+            except yaml.scanner.ScannerError:
+                pass
+
+        return val
+    else:
+        raise Exception("Cannot convert multiple values %s" % values)

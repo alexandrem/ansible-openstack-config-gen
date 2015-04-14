@@ -6,7 +6,7 @@ import sys
 import yaml
 
 from config_parser import OSConfigParser, print_comments, var_namespace, \
-                          show_header, infer_type
+                          show_header, value_to_yaml
 
 
 
@@ -23,25 +23,7 @@ def print_ansible_conf(parser, prefix, namespace):
             if len(entry['comments']) > 0:
                 print_comments(entry['comments'])
 
-            value_type = infer_type(entry['comments'])
-
-            if len(entry['value']) == 1:
-                val = entry['value'][0]
-
-                if val == '<None>':
-                    if value_type == 'int':
-                        val = None
-                    elif value_type == 'multi':
-                        val = []
-                    else:
-                        val = ''
-                else:
-                    try:
-                        val = yaml.load(val)
-                        if val is None:
-                            val = ''
-                    except yaml.scanner.ScannerError:
-                        pass
+            val = value_to_yaml(entry)
 
             if section.lower() != 'default':
                 name = "{0}_{1}".format(section.lower(), name)
