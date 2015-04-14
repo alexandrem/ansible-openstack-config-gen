@@ -31,8 +31,6 @@ def print_ansible_conf(parser, prefix, namespace):
             if namespace and not name.startswith(namespace):
                 name = "{0}_{1}".format(namespace, name)
 
-            #print "# config: {0}".format(name)
-
             if prefix:
                 name = "{0}_{1}".format(prefix, name)
 

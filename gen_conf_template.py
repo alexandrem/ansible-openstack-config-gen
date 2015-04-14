@@ -30,13 +30,10 @@ def print_ini_jinja(parser, prefix, namespace):
                 var_name = "{0}_{1}".format(namespace, var_name)
 
             var_name = "os_{0}".format(var_name)
-            #if prefix:
-            #    var_name = "{0}_{1}".format(prefix, var_name)
 
             if entry['commented'] and val is None:
                 print "{{% if not {0} -%}}#{{%- endif -%}}".format(var_name)
-                #print "{0}={{{{ {1} }}}}\n".format(name, var_name)
-            #else:
+
             print "{0}={{{{ {1} }}}}\n".format(name, var_name)
 
 
