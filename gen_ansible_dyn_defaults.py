@@ -40,7 +40,7 @@ def print_ansible_dyn_defaults(parser, prefix, namespace):
             if namespace and not var_name.startswith(namespace):
                 var_name = "{0}_{1}".format(namespace, var_name)
 
-            tmpl_name = "os_tmpl_{0}".format(var_name)
+            tmpl_name = "os_vars_{0}".format(var_name)
 
             os_release_var_name = "{0}_{1}".format(prefix, var_name)
 
