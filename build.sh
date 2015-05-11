@@ -8,47 +8,53 @@ genroot=generated/$name/$release
 tmp=generated/.tmp/$name/$release
 
 # clean previous runs
-rm -fr $genroot $tmp
+rm -fr $genroot
 
-mkdir -p $genroot/vars $genroot/vars/defaults $genroot/templates $genroot/tasks $tmp/vars
+mkdir -p $genroot/defaults $genroot/templates
 
-echo "Building default vars for $name from release $release..."
+get_namespace() {
+	filename=$1
+
+	# remove file extension and replace - by _
+	namespace=$(echo ${filename%.*} | sed 's/-/_/g')
+
+	if [[ $namespace != ${name}* ]]; then
+		namespace=${name}_${namespace}
+	fi
+	echo $namespace
+}
+
+echo "Building ansible files for service $name from release $release..."
 
 default_files=""
 
-for conf in $(find $folder -name *.conf); do
-	echo "file: $conf"
+for confpath in $(find $folder -name *.conf); do
+	# remove number prefix from conf name
+	conf=${confpath##*_}
+
+	echo "file: $conf ($confpath)"
 
 	basename=$(basename $conf | awk '{print tolower($0)}')
-	#base=$(echo ${basename%.*})
 
-	# generate default variables
-	python gen_ansible_defaults.py $conf $name os_$release > ./$genroot/vars/defaults/$basename.yml
+	namespace=$(get_namespace $basename)
+	echo "namespace $namespace"
 
-	# generate dynamic variables remapping
-	python gen_ansible_dyn_defaults.py $conf $name os_$release > ./$tmp/vars/$basename.yml
+	echo "generating default variables..."
+	python gen_ansible_defaults.py $confpath $namespace os_cfg > ./$genroot/defaults/$basename.yml
 
-	# generate template file
-	python gen_conf_template.py $conf $name os_$release > ./$genroot/templates/$basename.j2
+	echo "generating template files..."
+	python gen_conf_template.py $confpath $namespace os_cfg > ./$genroot/templates/$basename.j2
 
 	default_files+="$basename.yml "
 done
 
-# merge generated dynamic var files into single one
-out=./$genroot/vars/vars.yml
+echo "merging generated var defaults into a single one..."
+out=./$genroot/defaults/main.yml
+files=$(find ./$genroot/defaults -name *.yml)
 echo "---" > $out
-for file in $(find ./$tmp/vars -name *.yml); do
-	cat $file >> $out
+for file in $files; do
+	cat $file | sed 's/^\-\-\-$//g' >> $out
 	echo "" >> $out
 done
 
-# generate main.yml that includes all default variables
-include_defaults=$(echo $default_files | tr " " "\n" | sed '/^$/d' | sed 's|\(.*\.yml\)|- include_vars: defaults/\1|')
-cat <<EOF | tee ./$genroot/tasks/main.yml &> /dev/null
----
-$include_defaults
-
-- include_vars: vars.yml
-EOF
-
-echo "Final output is in: $genroot"
+echo "final output is in: $genroot"

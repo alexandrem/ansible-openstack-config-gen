@@ -133,6 +133,7 @@ def infer_type(comments):
     if '(integer value)' in text:
         return 'int'
 
+
 def value_to_yaml(entry):
     value_type = infer_type(entry['comments'])
 

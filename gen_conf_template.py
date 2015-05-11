@@ -2,9 +2,8 @@
 
 import sys
 
-from config_parser import OSConfigParser, print_comments, var_namespace, \
-                          show_header, value_to_yaml
-
+from config_parser import OSConfigParser, print_comments, show_header, \
+                          value_to_yaml
 
 
 def print_ini_jinja(parser, prefix, namespace):
@@ -29,9 +28,10 @@ def print_ini_jinja(parser, prefix, namespace):
             if namespace and not name.startswith(namespace):
                 var_name = "{0}_{1}".format(namespace, var_name)
 
-            var_name = "os_vars_{0}".format(var_name)
+            if prefix:
+                var_name = "{0}_{1}".format(prefix, var_name)
 
-            #if entry['commented'] and val is None:
+            # if entry['commented'] and val is None:
             print "{{% if not {0} -%}}#{{%- endif -%}}".format(var_name)
 
             print "{0}={{{{ {1} }}}}\n".format(name, var_name)
@@ -46,8 +46,6 @@ if __name__ == '__main__':
     with open(fpath) as f:
         lines = [line.strip() for line in f.readlines()]
         parser.parse(lines)
-
-        namespace = var_namespace(fpath, namespace)
 
         show_header(fpath, namespace,
                     title="openstack config template", yaml=False)

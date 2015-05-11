@@ -5,15 +5,14 @@ import sys
 
 import yaml
 
-from config_parser import OSConfigParser, print_comments, var_namespace, \
-                          show_header, value_to_yaml
-
+from config_parser import OSConfigParser, print_comments, show_header, \
+                          value_to_yaml
 
 
 def print_ansible_conf(parser, prefix, namespace):
     values = parser.values
 
-    for section in values:           
+    for section in values:
         print '\n## [{0}] ##\n'.format(section)
 
         if len(values[section]['comments']) > 0:
@@ -35,7 +34,8 @@ def print_ansible_conf(parser, prefix, namespace):
                 name = "{0}_{1}".format(prefix, name)
 
             if val is not None:
-                conf_line = yaml.dump(dict([(name, val)]), indent=2, default_flow_style=False)
+                conf_line = yaml.dump(dict([(name, val)]), indent=2,
+                                      default_flow_style=False)
             else:
                 conf_line = "{0}: \n".format(name)
 
@@ -55,8 +55,6 @@ if __name__ == '__main__':
     with open(fpath) as f:
         lines = [line.strip() for line in f.readlines()]
         parser.parse(lines)
-
-        namespace = var_namespace(fpath, namespace)
 
         show_header(fpath, namespace,
                     title="ansible defaults (yaml)")
