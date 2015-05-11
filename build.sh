@@ -35,12 +35,13 @@ for confpath in $(find $folder -name *.conf); do
 	echo "file: $conf ($confpath)"
 
 	basename=$(basename $conf | awk '{print tolower($0)}')
+	ori_basename=$(basename $confpath | awk '{print tolower($0)}')
 
 	namespace=$(get_namespace $basename)
 	echo "namespace $namespace"
 
 	echo "generating default variables..."
-	python gen_ansible_defaults.py $confpath $namespace os_cfg > ./$genroot/defaults/$basename.yml
+	python gen_ansible_defaults.py $confpath $namespace os_cfg > ./$genroot/defaults/$ori_basename.yml
 
 	echo "generating template files..."
 	python gen_conf_template.py $confpath $namespace os_cfg > ./$genroot/templates/$basename.j2
