@@ -94,15 +94,18 @@ class OSConfigParser(iniparser.BaseParser):
             self._assignment(key, value)
 
 
-def show_header(fpath, namespace, title, yaml=True):
+def show_header(fpath, namespace, prefix, desc='', yaml=True):
     date = datetime.strftime(datetime.today(), "%Y-%m-%d")
 
     print "#"
     print "# AUTOMATICALLY GENERATED ON {0}".format(date)
     print "#"
-    print "# {0}".format(title)
-    print "# original file: {0}".format(basename(fpath))
+    if desc:
+        print "# {0}".format(desc)
+        print "#"
+    print "# file: {0}".format(basename(fpath))
     print "# namespace: {0}".format(namespace)
+    print "# prefix: {0}".format(prefix)
     print "#"
     if yaml:
         print "---"

@@ -5,7 +5,6 @@ name=$2
 release=$3
 
 genroot=generated/$name/$release
-tmp=generated/.tmp/$name/$release
 
 # clean previous runs
 rm -fr $genroot
@@ -41,10 +40,10 @@ for confpath in $(find $folder -name *.conf); do
 	echo "namespace $namespace"
 
 	echo "generating default variables..."
-	python gen_ansible_defaults.py $confpath $namespace os_cfg > ./$genroot/defaults/$ori_basename.yml
+	python gen_ansible_defaults.py $confpath $namespace os_cfg "release: $release" > ./$genroot/defaults/$ori_basename.yml
 
 	echo "generating template files..."
-	python gen_conf_template.py $confpath $namespace os_cfg > ./$genroot/templates/$basename.j2
+	python gen_conf_template.py $confpath $namespace os_cfg "release: $release" > ./$genroot/templates/$basename.j2
 
 	default_files+="$basename.yml "
 done

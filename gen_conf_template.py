@@ -41,13 +41,13 @@ if __name__ == '__main__':
     fpath = sys.argv[1]
     namespace = sys.argv[2] if len(sys.argv) >= 3 else ''
     prefix = sys.argv[3] if len(sys.argv) >= 4 else ''
+    desc = sys.argv[4] if len(sys.argv) >= 5 else ''
 
     parser = OSConfigParser()
     with open(fpath) as f:
         lines = [line.strip() for line in f.readlines()]
         parser.parse(lines)
 
-        show_header(fpath, namespace,
-                    title="openstack config template", yaml=False)
+        show_header(fpath, namespace, prefix, desc)
 
         print_ini_jinja(parser, prefix=prefix, namespace=namespace)
