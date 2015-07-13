@@ -7,6 +7,9 @@ import yaml
 from oslo.config import iniparser
 
 
+VERSION = 0.1
+
+
 class OSConfigParser(iniparser.BaseParser):
     comment_called = False
     values = None
@@ -99,10 +102,10 @@ def show_header(fpath, namespace, prefix, desc='', yaml=True):
 
     print "#"
     print "# AUTOMATICALLY GENERATED ON {0}".format(date)
+    print "# ansible-openstack-config-gen version: {0}".format(VERSION)
     print "#"
     if desc:
         print "# {0}".format(desc)
-        print "#"
     print "# file: {0}".format(basename(fpath))
     print "# namespace: {0}".format(namespace)
     print "# prefix: {0}".format(prefix)
@@ -152,8 +155,8 @@ def value_to_yaml(entry):
     if len(entry['value']) == 1:
         val = entry['value'][0]
 
-        if val == '<None>':
-            val = convert(val)
+        if val.startswith('<') and val.endswith('>'):
+            val = ''
         else:
             try:
                 val = yaml.load(val)
