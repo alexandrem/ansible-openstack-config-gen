@@ -3,7 +3,7 @@
 import sys
 
 from config_parser import OSConfigParser, print_comments, show_header, \
-                          value_to_yaml
+                          format_var_name, value_to_yaml
 
 
 def print_ini_jinja(parser, prefix, namespace):
@@ -30,6 +30,8 @@ def print_ini_jinja(parser, prefix, namespace):
 
             if prefix:
                 var_name = "{0}_{1}".format(prefix, var_name)
+
+            var_name = format_var_name(var_name)
 
             # if entry['commented'] and val is None:
             print "{{% if not {0} -%}}#{{%- endif -%}}".format(var_name)

@@ -7,7 +7,7 @@ import yaml
 from oslo.config import iniparser
 
 
-VERSION = 0.1
+VERSION = 0.2
 
 
 class OSConfigParser(iniparser.BaseParser):
@@ -138,6 +138,10 @@ def infer_type(comments):
         return 'list'
     if '(integer value)' in text:
         return 'int'
+
+
+def format_var_name(name):
+    return name.replace('-', '_').lower()
 
 
 def value_to_yaml(entry):

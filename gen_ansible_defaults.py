@@ -6,7 +6,7 @@ import sys
 import yaml
 
 from config_parser import OSConfigParser, print_comments, show_header, \
-                          value_to_yaml
+                          format_var_name, value_to_yaml
 
 
 def print_ansible_conf(parser, prefix, namespace):
@@ -32,6 +32,8 @@ def print_ansible_conf(parser, prefix, namespace):
 
             if prefix:
                 name = "{0}_{1}".format(prefix, name)
+
+            name = format_var_name(name)
 
             if val is not None:
                 conf_line = yaml.dump(dict([(name, val)]), indent=2,
