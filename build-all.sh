@@ -7,3 +7,4 @@
 
 ./build.sh originals/nova/juno nova juno
 ./build.sh originals/glance/juno glance juno
+./build.sh originals/cinder/juno cinder juno
