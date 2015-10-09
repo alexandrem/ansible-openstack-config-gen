@@ -7,7 +7,7 @@ import yaml
 from oslo_config import iniparser
 
 
-VERSION = 0.2.1
+VERSION = "0.2.1"
 
 
 class OSConfigParser(iniparser.BaseParser):
