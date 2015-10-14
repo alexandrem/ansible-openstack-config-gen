@@ -1,3 +1,8 @@
+0.2.3
+=====
+
+- Convert int vars with None to 0 value
+
 0.2.2
 =====
 

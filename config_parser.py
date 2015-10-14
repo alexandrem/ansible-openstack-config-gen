@@ -8,7 +8,7 @@ import yaml
 from oslo_config import iniparser
 
 
-VERSION = "0.2.2"
+VERSION = "0.2.3"
 
 
 class OSConfigParser(iniparser.BaseParser):
@@ -139,6 +139,8 @@ def infer_type(comments):
         return 'list'
     if '(integer value)' in text:
         return 'int'
+    if '(string value)' in text:
+        return 'str'
 
 
 def format_var_name(name):
@@ -149,12 +151,14 @@ def format_var_name(name):
 def value_to_yaml(entry):
     value_type = infer_type(entry['comments'])
 
-    def convert(val):
-        if value_type == 'int' or value_type == 'multi':
+    def convert_to_none(val, keep_string=True):
+        if value_type == 'int':
+            val = 0
+        elif value_type == 'multi':
             val = None
         elif value_type == 'list':
             val = []
-        else:
+        elif value_type != 'str' or not keep_string:
             val = ''
         return val
 
@@ -167,7 +171,9 @@ def value_to_yaml(entry):
             try:
                 val = yaml.load(val)
                 if val is None:
-                    val = convert(val)
+                    val = convert_to_none(val, keep_string=False)
+                elif val == 'None':
+                    val = convert_to_none(val)
             except yaml.scanner.ScannerError:
                 pass
 
