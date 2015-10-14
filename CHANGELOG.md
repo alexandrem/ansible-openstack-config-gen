@@ -1,3 +1,10 @@
+0.2.2
+=====
+
+- Added non-alphanum characters filtering for variable name
+--  this now allows to generate some particular ini configs that have
+    section names with *^ chars in it
+
 0.2.1
 =====
 

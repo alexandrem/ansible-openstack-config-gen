@@ -1,13 +1,14 @@
 from os.path import basename, splitext
 from datetime import datetime
 from collections import OrderedDict
+import re
 
 import yaml
 
 from oslo_config import iniparser
 
 
-VERSION = "0.2.1"
+VERSION = "0.2.2"
 
 
 class OSConfigParser(iniparser.BaseParser):
@@ -141,7 +142,8 @@ def infer_type(comments):
 
 
 def format_var_name(name):
-    return name.replace('-', '_').lower()
+    name = name.replace('-', '_').lower()
+    return re.sub(r'[^a-zA-Z0-9_]', '', name)
 
 
 def value_to_yaml(entry):

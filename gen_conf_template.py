@@ -22,6 +22,9 @@ def print_ini_jinja(parser, prefix, namespace):
             val = value_to_yaml(entry)
 
             var_name = name
+            
+            section = format_var_name(section)
+
             if section.lower() != 'default':
                 var_name = "{0}_{1}".format(section.lower(), var_name)
 

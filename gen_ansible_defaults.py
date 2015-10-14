@@ -24,6 +24,8 @@ def print_ansible_conf(parser, prefix, namespace):
 
             val = value_to_yaml(entry)
 
+            section = format_var_name(section)
+
             if section.lower() != 'default':
                 name = "{0}_{1}".format(section.lower(), name)
 
