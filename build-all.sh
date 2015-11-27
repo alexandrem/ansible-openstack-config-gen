@@ -11,3 +11,4 @@
 ./build.sh originals/cinder/juno cinder juno
 
 ./build.sh originals/nova/liberty nova liberty
+./build.sh originals/keystone/liberty keystone liberty
