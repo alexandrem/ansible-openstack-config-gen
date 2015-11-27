@@ -9,3 +9,5 @@
 ./build.sh originals/keystone/juno keystone juno
 ./build.sh originals/glance/juno glance juno
 ./build.sh originals/cinder/juno cinder juno
+
+./build.sh originals/nova/liberty nova liberty
