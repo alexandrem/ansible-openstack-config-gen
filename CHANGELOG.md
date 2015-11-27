@@ -1,3 +1,11 @@
+0.3.0
+=====
+
+- Change logic to print template if condition for template variables
+  - Use infer_type and add condition only for str,multi and None
+  - Add condition if value is None
+- Add boolean infer type
+
 0.2.3
 =====
 

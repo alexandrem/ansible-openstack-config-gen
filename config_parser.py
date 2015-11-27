@@ -8,7 +8,7 @@ import yaml
 from oslo_config import iniparser
 
 
-VERSION = "0.2.3"
+VERSION = "0.3.0"
 
 
 class OSConfigParser(iniparser.BaseParser):
@@ -141,6 +141,9 @@ def infer_type(comments):
         return 'int'
     if '(string value)' in text:
         return 'str'
+    if '(boolean value)' in text:
+        return 'bool'
+    return None
 
 
 def format_var_name(name):
