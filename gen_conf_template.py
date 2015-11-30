@@ -38,7 +38,9 @@ def print_ini_jinja(parser, prefix, namespace):
             var_name = format_var_name(var_name)
 
             # if entry['commented'] and val is None:
-            if value_type in ['str', 'list', None] or value is None:
+            if value_type in ['int','multi']:
+                print "{{% if {0} is none -%}}#{{%- endif -%}}".format(var_name)
+            elif value_type in ['str', 'list', None] or value is None:
                 print "{{% if not {0} -%}}#{{%- endif -%}}".format(var_name)
 
             print "{0}={{{{ {1} }}}}\n".format(name, var_name)

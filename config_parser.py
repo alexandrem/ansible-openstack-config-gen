@@ -156,7 +156,7 @@ def value_to_yaml(entry):
 
     def convert_to_none(val, keep_string=True):
         if value_type == 'int':
-            val = 0
+            val = None
         elif value_type == 'multi':
             val = None
         elif value_type == 'list':
@@ -169,7 +169,7 @@ def value_to_yaml(entry):
         val = entry['value'][0]
 
         if val.startswith('<') and val.endswith('>'):
-            val = None
+            val = convert_to_none(val, keep_string=False)
         else:
             try:
                 val = yaml.load(val)

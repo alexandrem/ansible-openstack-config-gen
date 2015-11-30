@@ -1,3 +1,9 @@
+0.3.1
+=====
+
+- Add new logic to print template if condition for integer values that are None
+-- Use jinja2 "is none" and comment if true
+
 0.3.0
 =====
 
