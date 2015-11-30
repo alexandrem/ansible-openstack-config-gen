@@ -8,7 +8,7 @@ import yaml
 from oslo_config import iniparser
 
 
-VERSION = "0.3.0"
+VERSION = "0.3.1"
 
 
 class OSConfigParser(iniparser.BaseParser):
@@ -169,7 +169,7 @@ def value_to_yaml(entry):
         val = entry['value'][0]
 
         if val.startswith('<') and val.endswith('>'):
-            val = ''
+            val = None
         else:
             try:
                 val = yaml.load(val)
