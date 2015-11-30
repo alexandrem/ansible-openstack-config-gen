@@ -159,6 +159,8 @@ def value_to_yaml(entry):
             val = None
         elif value_type == 'multi':
             val = None
+        elif value_type == 'bool':
+            val = None
         elif value_type == 'list':
             val = []
         elif value_type != 'str' or not keep_string:
