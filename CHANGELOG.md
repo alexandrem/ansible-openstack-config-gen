@@ -1,3 +1,9 @@
+0.4.0
+=====
+
+- Prevent possible error with yaml nested dict expression during string parsing
+-- i.e {'ss:mem': null} instead of 'ss:mem:'
+
 0.3.1
 =====
 
