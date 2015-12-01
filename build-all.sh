@@ -12,3 +12,4 @@
 
 ./build.sh originals/nova/liberty nova liberty
 ./build.sh originals/keystone/liberty keystone liberty
+./build.sh originals/glance/liberty glance liberty
