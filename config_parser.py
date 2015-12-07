@@ -8,7 +8,7 @@ import yaml
 from oslo_config import iniparser
 
 
-VERSION = "0.4.0"
+VERSION = "0.4.1"
 
 
 class OSConfigParser(iniparser.BaseParser):
@@ -183,6 +183,8 @@ def value_to_yaml(entry):
                 else:
                     if value_type == 'str' and type(val) is dict:
                         #print "FUCK PREVENTION: use scalar instead of nested dict"
+                        val = ori_val
+                    elif value_type == 'str' and type(val) is bool:
                         val = ori_val
             except yaml.scanner.ScannerError:
                 pass
