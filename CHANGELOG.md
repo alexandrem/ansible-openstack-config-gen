@@ -1,3 +1,10 @@
+0.4.1
+=====
+
+- Fix string values that got wrong converted to booleans
+
+Add quotes to values that got interpreted as yaml boolean values (on,off,true,false) when type is string
+
 0.4.0
 =====
 
