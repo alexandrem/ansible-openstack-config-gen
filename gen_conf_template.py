@@ -45,6 +45,20 @@ def print_ini_jinja(parser, prefix, namespace):
 
             print "{0}={{{{ {1} }}}}\n".format(name, var_name)
 
+    # custom section configs
+    print """
+#
+# Custom section configs
+#
+{%% for section, keypair in %s | dictsort %%}
+[{{ section }}]
+{%% if keypair is not string %%}
+{%% for name, value in keypair | dictsort %%}
+{{ name }}={{ value }}
+{%% endfor %%}
+{%% endif %%}
+{%% endfor %%}""" % "{0}_{1}".format(prefix, namespace)
+
 
 if __name__ == '__main__':
     fpath = sys.argv[1]

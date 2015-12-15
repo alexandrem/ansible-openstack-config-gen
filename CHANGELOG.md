@@ -1,3 +1,8 @@
+0.5.0
+=====
+
+- Add ability to write custom configs using hash variables
+
 0.4.1
 =====
 

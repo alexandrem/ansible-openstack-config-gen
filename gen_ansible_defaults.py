@@ -49,6 +49,19 @@ def print_ansible_conf(parser, prefix, namespace):
             else:
                 print "#{0}".format(conf_line)
 
+    print """
+## [CUSTOM] ##
+#
+# This is a hash of custom value configs to append to conf file
+# Format: (json)
+# {
+#     'section': {
+#         'name': 'value'
+#     }
+# }
+    """
+    print "{0}_{1}: {2}".format(prefix, namespace, '{}')
+
 
 if __name__ == '__main__':
     fpath = sys.argv[1]
