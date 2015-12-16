@@ -15,3 +15,4 @@
 ./build.sh originals/glance/liberty glance liberty
 ./build.sh originals/cinder/liberty cinder liberty
 ./build.sh originals/ceilometer/liberty ceilometer liberty
+./build.sh originals/heat/liberty heat liberty
