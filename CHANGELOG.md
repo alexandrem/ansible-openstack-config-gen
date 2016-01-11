@@ -1,3 +1,9 @@
+0.5.1
+=====
+
+- Fix template prefix duplication with section name
+
+
 0.5.0
 =====
 

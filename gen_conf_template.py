@@ -29,7 +29,7 @@ def print_ini_jinja(parser, prefix, namespace):
             if section.lower() != 'default':
                 var_name = "{0}_{1}".format(section.lower(), var_name)
 
-            if namespace and not name.startswith(namespace):
+            if namespace and not var_name.startswith(namespace):
                 var_name = "{0}_{1}".format(namespace, var_name)
 
             if prefix:
