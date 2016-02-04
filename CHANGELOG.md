@@ -1,3 +1,9 @@
+0.6.0
+=====
+
+- Support multi valued options in templates by looping items when config value
+  is iterable
+
 0.5.1
 =====
 
