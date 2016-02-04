@@ -37,21 +37,21 @@ def print_ini_jinja(parser, prefix, namespace):
 
             var_name = format_var_name(var_name)
 
-            # if entry['commented'] and val is None:
-            if value_type in ['int', 'multi', 'bool']:
-                print "{{% if {0} is none -%}}#{{%- endif -%}}".format(var_name)
-            elif value_type in ['str', 'list', None] or value is None:
-                print "{{% if not {0} -%}}#{{%- endif -%}}".format(var_name)
-                
             if value_type == 'multi':
-                print ("{{% if {1} is sequence %}}"
-                       "{{% for val in {0} %}}"
-                       "{0}={{{{ item }}}}"
-                       "{{% endfor %}}"
-                       "{{% else %}}"
-                       "{0}={{{{ {1} }}}}"
+                print ("{{% if {1} is not string and {1} is sequence %}}\n"
+                       "{{% for val in {1} %}}\n"
+                       "{0}={{{{ val }}}}\n"
+                       "{{% endfor %}}\n"
+                       "{{% else %}}\n"
+                       "{{% if {1} is none -%}}#{{%- endif -%}}\n"
+                       "{0}={{{{ {1} }}}}\n"
                        "{{% endif %}}\n".format(name, var_name))
             else:
+                if value_type in ['int', 'bool']:
+                    print "{{% if {0} is none -%}}#{{%- endif -%}}".format(var_name)
+                elif value_type in ['str', 'list', None] or value is None:
+                    print "{{% if not {0} -%}}#{{%- endif -%}}".format(var_name)
+
                 print "{0}={{{{ {1} }}}}\n".format(name, var_name)
 
     # custom section configs
